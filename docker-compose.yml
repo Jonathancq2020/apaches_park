@@ -18,6 +18,8 @@ services:
     volumes:
       - ./notebooks:/home/jovyan/work
       - ./files/archivo.csv:/home/jovyan/work/archivo.csv
+      - ./files/test1.csv:/home/jovyan/work/test1.csv
+      - ./files/ejemplo.csv:/home/jovyan/work/ejemplo.csv
       - ./jar/postgresql.jar:/usr/local/spark/postgresql.jar
     environment:
       - SPARK_OPTS=--master=spark://spark:7077 --executor-memory=1G --total-executor-cores=2
