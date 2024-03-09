@@ -1,0 +1,40 @@
+#Read files
+
+from pyspark.sql import SparkSession
+
+# Crear una sesión de Spark
+spark = SparkSession.builder.appName("Ejemplo de lectura de CSV con PySpark").getOrCreate()
+
+# Ruta del archivo CSV
+archivo_csv = "/home/jovyan/work/archivo.csv"
+
+# Leer el archivo CSV en un DataFrame de Spark
+df = spark.read.csv(archivo_csv, header=True, inferSchema=True)
+
+# Mostrar el esquema del DataFrame
+df.printSchema()
+
+# Mostrar las primeras filas del DataFrame
+df.show()
+
+# Ejemplo de consultas simples
+# 1. Contar el número total de filas en el DataFrame
+total_filas = df.count()
+print("Total de filas:", total_filas)
+
+# 2. Mostrar estadísticas descriptivas para una columna específica
+df.describe("nombre_de_la_columna").show()
+
+# 3. Filtrar el DataFrame
+df_filtrado = df.filter(df["nombre_de_la_columna"] == "valor_deseado")
+
+# 5. Calcular el promedio de una columna numérica
+promedio = df.agg({"nombre_de_la_columna_numerica": "avg"}).collect()[0][0]
+print("Promedio:", promedio)
+
+
+
+spark.stop()
+
+
+

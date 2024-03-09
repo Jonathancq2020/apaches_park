@@ -1,0 +1,25 @@
+version: '3.7'
+
+services:
+  spark:
+    image: apache/spark:latest
+    container_name: spark
+    environment:
+      - ENABLE_INIT_DAEMON=false
+    ports:
+      - "8080:8080"
+      - "7077:7077"
+
+  jupyter:
+    image: jupyter/pyspark-notebook
+    container_name: jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./notebooks:/home/jovyan/work
+      - ./files/archivo.csv:/home/jovyan/work/archivo.csv
+      - ./jar/postgresql.jar:/usr/local/spark/postgresql.jar
+    environment:
+      - SPARK_OPTS=--master=spark://spark:7077 --executor-memory=1G --total-executor-cores=2
+      - SPARK_MASTER=spark://spark:7077
+      - SPARK_EXTRA_CLASSPATH=/usr/local/spark/postgresql.jar

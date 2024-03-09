@@ -1,0 +1,23 @@
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Consultas SQL con PySpark y guardarlas en PostgreSQL") \
+    .getOrCreate()
+
+# Crear un DataFrame de ejemplo
+data = [("Alex", 250.20, 33), ("Santiago", 134.80, 45), ("Michael", 897.45, 22), ("Stalin", 134.44, 32)]
+df = spark.createDataFrame(data, ["nombre", "salario", "edad"])
+
+# Configurar las opciones para la escritura en PostgreSQL
+url = "jdbc:postgresql://localhost:5432/litethinking"
+properties = {
+    "user": "postgres",
+    "password": "postgres",
+    "driver": "org.postgresql.Driver"
+}
+
+# Escribir el DataFrame en la tabla de PostgreSQL
+df.write.jdbc(url=url, table="users", mode="append", properties=properties)
+
+# Cerrar la sesión de Spark
+spark.stop()

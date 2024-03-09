@@ -1,0 +1,18 @@
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+    .appName("Consultas SQL con PySpark y guardarlas en PostgreSQL") \
+    .getOrCreate()
+
+# Crear un DataFrame de ejemplo
+data = [("Alex", 250.20, 33), ("Santiago", 134.80, 45), ("Michael", 897.45, 22), ("Stalin", 134.44, 32)]
+df = spark.createDataFrame(data, ["nombre", "salario", "edad"])
+
+# Especificar la ruta donde se guardará el archivo CSV
+ruta_csv = "/home/jovyan/work/respaldo.csv"
+
+# Guardar el DataFrame en un archivo CSV
+df.write.csv(path=ruta_csv, header=True)
+
+# Cerrar la sesión de Spark
+spark.stop()
